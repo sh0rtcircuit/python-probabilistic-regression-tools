@@ -1,9 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+__author__ = "Jens Schreiber"
+__copyright__ = "Copyright 2018"
+__status__ = "Prototype"
+
 
 def plot_quantile_forecast(x, measurements, probabilistic_forecasts, quantiles):
-    """ TODO
+    """ Plots a scatter plot from a quantile forecast.
 
     :param x: The (one dimensional) data for the x-axis.
     :param  measurements: array_like

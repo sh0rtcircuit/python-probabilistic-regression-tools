@@ -1,7 +1,3 @@
-__author__ = "Jens Schreiber"
-__copyright__ = "Copyright 2018"
-__status__ = "Prototype"
-
 from collections import defaultdict
 
 import numpy as np
@@ -10,6 +6,10 @@ from sklearn.base import clone
 from sklearn.utils.validation import check_X_y, check_array
 
 from probabilistic_regression_tools.scores import crps_for_quantiles
+
+__author__ = "Jens Schreiber"
+__copyright__ = "Copyright 2018"
+__status__ = "Prototype"
 
 """
 The :mod:`sklearn.pipeline` module implements utilities to build a composite
@@ -54,25 +54,53 @@ class QuantileForecastWrapper(BaseEstimator):
                  loss=crps_for_quantiles,
                  name_of_quantile_param='alpha',
                  include_zero_quantile=False,
-                 include_one_quantile=False):
+                 include_one_quantile=False,
+                 predict_cdfs=False):
+        """
+        :param estimators:
+                A single estimator to fit or a list of different estimators.
+                In case a single estimator is given the estimator is cloned.
+                 In case a list of estimators is given they need to aligned with the quantiles.
+        :param quantiles: list or numpy.array
+                One dimenstional array or list of quantiles that are fitted by the estimators.
+        :param loss: probabilistic loss
+                Loss that is used in the score function, e.g., for GridSearch.
+        :param name_of_quantile_param: str
+                The name of parameter to set the quantile for each estimator.
+        :param include_zero_quantile: bool
+                True if the minimum of the training data should be predicted as 0th quantile.
+        :param include_one_quantile: bool
+              True if the maximum of the training data should be predicted as 1th quantile.
+        :param predict_cdfs: bool
+                False if quantiles should be forecasted in the predict_proba method.
+                True if the output should be converted to CDFs.
+        """
+
         if estimators is None:
             raise ValueError("Estimators should be a list of quantile forecasts or a single forecast model.")
+
+        # in case only a single quantile is given
+        if not isinstance(quantiles, (list,)):
+            quantiles = [quantiles]
 
         self.quantiles = np.array(quantiles)
         self.estimators = estimators
         self.loss = loss
-        # self.mapping = collections.defaultdict(type(self.estimator))
         self.include_zero_quantile = include_zero_quantile
         self.include_one_quantile = include_one_quantile
 
         self.name_of_quantile_param = name_of_quantile_param
+        self.mapping = dict()
 
         self._init_estimators()
+
+        self.predict_cdfs = predict_cdfs
 
         self.named_est = {key: value for key, value in
                           _name_estimators([self.estimators])}
 
     def _init_estimators(self):
+        """Sets the different quantiles for all estimators"""
         if not isinstance(self.estimators, (list,)):
             estimator = self.estimators
             self.estimators = [clone(estimator) for q in self.quantiles]
@@ -83,14 +111,21 @@ class QuantileForecastWrapper(BaseEstimator):
 
         self.mapping = dict(zip(self.quantiles, self.estimators))
 
-        for k in self.mapping: self.mapping[k].set_params(alpha=k)
+        args = dict()
+        for k in self.mapping:
+            args[self.name_of_quantile_param] = k
+            self.mapping[k].set_params(**args)
 
     def fit(self, X, y):
-        """
-        Note: X and y is not stored, because it takes to much memory
-        :param X:
-        :param y:
-        :return:
+        """ Fit the model to create distributions with correct spread.
+
+            Parameters
+            ----------
+                X : array_like, shape (n, n_features)
+                    List of n_features-dimensional data points. Each row
+                    corresponds to a single data point.
+                y : array_like, shape (n,)
+                    Labels for the given data points X
         """
 
         X, y = check_X_y(X, y)
@@ -103,18 +138,21 @@ class QuantileForecastWrapper(BaseEstimator):
         return self
 
     def predict(self, X):
+        """ Creates a predictive distribution for each data point.
 
-        # TODO check_is_fitted(self, ['X_', 'y_'])
-        X = check_array(X)
+            Parameters
+            ----------
+                X : array-like, shape = [n_samples, n_features]
 
-        if 0.5 in self.mapping:
-            return self.mapping[0.5].predict(X)
-        else:
-            raise NotImplementedError("Should implement a interpolated forecast " + \
-                                      "of the two closest quantiles.")
+            Returns
+            -------
+                probabilistic_forecasts : array, shape = (n_samples,) component memberships
+        """
+
+        return self.predict_proba(X)
 
     def _quantiles_including_zero_and_one_quantile_padding(self):
-
+        """Helper function to get a list of quantiles with 0th and 1th quantile for prediction."""
         quantiles = self.quantiles
 
         if self.include_zero_quantile: quantiles = [0, *quantiles]
@@ -123,6 +161,16 @@ class QuantileForecastWrapper(BaseEstimator):
         return np.array(quantiles)
 
     def predict_proba(self, X):
+        """ Creates a predictive distribution for each data point.
+
+            Parameters
+            ----------
+                X : array-like, shape = [n_samples, n_features]
+
+            Returns
+            -------
+                probabilistic_forecasts : array, shape = (n_samples,) component memberships
+        """
 
         # check_is_fitted(self, ['X_', 'y_'])
         X = check_array(X)
@@ -141,13 +189,37 @@ class QuantileForecastWrapper(BaseEstimator):
 
             res[idx, :] = cur_res
 
+        if self.predict_cdfs:
+            raise NotImplementedError("Should implement a conversion to CDFS.")
+
         return res.T
 
     def score(self, X, y):
+        """ Return the configured probabilistic score.
+
+            Parameters
+            ----------
+                X : array_like, shape (n, n_features)
+                    List of n_features-dimensional data points. Each row
+                    corresponds to a single data point.
+                y : array_like, shape (n,)
+                    Labels for the given data points X
+        """
+
         return crps_for_quantiles(self.predict_proba(X), y, \
                                   self._quantiles_including_zero_and_one_quantile_padding())[0]
 
     def set_params(self, **params):
+        """Set the parameters of this estimator.
+                The method works on simple estimators as well as on nested objects
+                (such as pipelines). The latter have parameters of the form
+                ``<component>__<parameter>`` so that it's possible to update each
+                component of a nested object.
+                Returns
+                -------
+                self
+        """
+
         for key, value in params.items():
             if key == 'quantiles':
                 self.quantiles = value
@@ -155,3 +227,4 @@ class QuantileForecastWrapper(BaseEstimator):
                 self.loss = value
             else:
                 self.estimator.set_params(**{key: value})
+        return self

@@ -2,6 +2,10 @@
 
 import numpy as np
 
+__author__ = "Jens Schreiber"
+__copyright__ = "Copyright 2018"
+__status__ = "Prototype"
+
 
 def probdists_2_quantiles(probabilistic_forecasts, quantiles=np.linspace(0.1, 0.9, 9)):
     """Converts list of 'M' scipy.stats objects (rv_continuous) to quantile
