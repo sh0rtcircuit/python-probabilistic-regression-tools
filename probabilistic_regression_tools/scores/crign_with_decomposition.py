@@ -85,7 +85,7 @@ def crign_with_decomposition(probabilistic_forecasts, measurements, quantiles=np
     return crign, crign_rel, crign_res, crign_unc
 
 
-def _binaryignorance_with_decomposition(probability_class, measurements):
+def _binaryignorance_with_decomposition(probability_class: object, measurements: object) -> object:
     """Computation of decomposition components of binary ignorance."""
     probability_categories = np.unique(probability_class)
     number_probability_categories = probability_class.size

@@ -24,3 +24,6 @@ def probdists_2_quantiles(probabilistic_forecasts, quantiles=np.linspace(0.1, 0.
 
     quantile_forecasts = list(map(lambda x: x.ppf(quantiles), probabilistic_forecasts))
     return np.array(quantile_forecasts)
+
+
+    ## TODO should also provide the other way around

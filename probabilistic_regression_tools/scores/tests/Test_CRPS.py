@@ -2,12 +2,12 @@
 
 import numpy as np
 import pandas as pd
+import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+import probabilistic_regression_tools.probmdl.Homoscedastic_Mdl as Homoscedastic_Mdl
 from nose.tools import assert_true
 from scipy.stats import norm
 from sklearn import linear_model
 
-import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
-import probabilistic_regression_tools.probmdl.Homoscedastic_Mdl as Homoscedastic_Mdl
 import probabilistic_regression_tools.scores.crps as crps
 import probabilistic_regression_tools.scores.crps_for_quantiles as crps_for_quantiles
 

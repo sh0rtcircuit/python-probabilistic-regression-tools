@@ -7,9 +7,8 @@ __status__ = "Prototype"
 # 27.02.2018
 
 import numpy as np
-import scipy.stats
-
 import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+import scipy.stats
 
 
 def intervalscore(probabilistic_forecasts, measurements, quantiles=np.linspace(0.1, 0.9, 9)):
@@ -62,10 +61,10 @@ def intervalscore(probabilistic_forecasts, measurements, quantiles=np.linspace(0
 
         interval_score_each_obs[:, i] = (quantile_forecasts[:, u_idx] - quantile_forecasts[:, l_idx]) \
                                         + (2 / alphas[i]) * (
-                                                measurements - quantile_forecasts[:, u_idx]) * np.heaviside(
+            measurements - quantile_forecasts[:, u_idx]) * np.heaviside(
             measurements - quantile_forecasts[:, u_idx], 1) \
                                         + (2 / alphas[i]) * (
-                                                quantile_forecasts[:, l_idx] - measurements) * np.heaviside(
+            quantile_forecasts[:, l_idx] - measurements) * np.heaviside(
             quantile_forecasts[:, l_idx] - measurements, 1)
 
     single_is = np.mean(interval_score_each_obs, 0)

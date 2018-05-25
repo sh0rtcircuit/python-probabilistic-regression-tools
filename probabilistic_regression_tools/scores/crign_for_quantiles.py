@@ -7,9 +7,8 @@ __status__ = "Prototype"
 # 27.02.2018
 
 import numpy as np
-import scipy.stats
-
 import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+import scipy.stats
 
 
 def crign_for_quantiles(probabilistic_forecasts, measurements, quantiles=np.linspace(0.1, 0.9, 9)):

@@ -5,9 +5,8 @@ __copyright__ = "Copyright 2018"
 __status__ = "Prototype"
 
 import numpy as np
-import scipy.stats
-
 import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+import scipy.stats
 
 
 def quantilescore(probabilistic_forecasts, measurements, quantiles=np.linspace(0.1, 0.9, 9)):
