@@ -42,7 +42,7 @@ def intervalscore(probabilistic_forecasts, measurements, quantiles=np.linspace(0
 
     # convert to quantile representation if necessary
     if isinstance(probabilistic_forecasts[0], scipy.stats._distn_infrastructure.rv_frozen):
-        quantile_forecasts = probdists_2_quantiles.probdists_2_quantiles(probabilistic_forecasts, quantiles)
+        quantile_forecasts = probdists_2_quantiles(probabilistic_forecasts, quantiles)
     else:
         quantile_forecasts = np.array(probabilistic_forecasts)
 
