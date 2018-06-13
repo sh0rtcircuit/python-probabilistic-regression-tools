@@ -39,7 +39,7 @@ def quantilescore(probabilistic_forecasts, measurements, quantiles=np.linspace(0
     """
 
     if isinstance(probabilistic_forecasts[0], scipy.stats._distn_infrastructure.rv_frozen):
-        quantile_forecasts = probdists_2_quantiles.probdists_2_quantiles(probabilistic_forecasts, quantiles=quantiles)
+        quantile_forecasts = probdists_2_quantiles(probabilistic_forecasts, quantiles=quantiles)
     else:
         quantile_forecasts = np.array(probabilistic_forecasts)
 
