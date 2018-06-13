@@ -5,7 +5,8 @@ __copyright__ = "Copyright 2018"
 __status__ = "Prototype"
 
 import numpy as np
-import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+#import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+from probabilistic_regression_tools.utils import probdists_2_quantiles
 import scipy.stats
 
 
