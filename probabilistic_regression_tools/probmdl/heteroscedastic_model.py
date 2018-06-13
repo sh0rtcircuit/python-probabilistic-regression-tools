@@ -18,7 +18,7 @@ class HeteroscedasticRegression(BaseEstimator):
 
     """
 
-    def __init__(self, deterministic_mdl, loss_func=crps, verbose=True, optimize_method='BFGS'):
+    def __init__(self, deterministic_mdl, loss_func=crps, verbose=1, optimize_method='BFGS'):
         """ Initialize the homoscedastic model with a pretrained deterministic_mdl.
 
             Parameters
@@ -55,6 +55,7 @@ class HeteroscedasticRegression(BaseEstimator):
         opt_result = minimize(lambda linear_coeffs: self._fitness(X, y, linear_coeffs), self._linearmodel_coeffs,
                               method=self.optimize_method)
         self._linearmodel_coeffs = opt_result.x
+        return self
 
     def predict(self, X):
         """ Creates a predictive distribution for each data point.
@@ -77,7 +78,7 @@ class HeteroscedasticRegression(BaseEstimator):
         prob_pred = self.predict(X)
         lossfunc_val = self.loss_func(prob_pred, y)[0]
 
-        if self.verbose:
+        if self.verbose>0:
             print('Iteration ' + str(self.it) + ' loss func value: ' + str(lossfunc_val))
             self.it = self.it + 1
 

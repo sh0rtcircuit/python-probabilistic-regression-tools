@@ -22,7 +22,7 @@ class HomoscedasticRegression(BaseEstimator):
     """
 
     def __init__(self, deterministic_mdl, loss_func=_log_likelihood_loss, sigma=1, \
-                 verbose=True, optimize_method='BFGS'):
+                 verbose=1, optimize_method='BFGS'):
         """ Initialize the homoscedastic model with a pretrained deterministic_mdl.
 
             Parameters
@@ -70,6 +70,7 @@ class HomoscedasticRegression(BaseEstimator):
         """
         opt_result = minimize(lambda sigma: self._fitness(X, y, sigma), 1, method=self.optimize_method)
         self.sigma = opt_result.x
+        return self
 
     def predict(self, X):
         """ Creates a predictive distribution for each data point.
@@ -91,7 +92,7 @@ class HomoscedasticRegression(BaseEstimator):
         prob_pred = self.predict(X)
         lossfunc_val = self.loss_func(prob_pred, y)[0]
 
-        if self.verbose:
+        if self.verbose > 0:
             print('Iteration ' + str(self.it) + ' loss func value: ' + str(lossfunc_val))
             self.it = self.it + 1
 
