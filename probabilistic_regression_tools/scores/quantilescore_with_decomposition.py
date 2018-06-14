@@ -5,7 +5,8 @@ __copyright__ = "Copyright 2018"
 __status__ = "Prototype"
 
 import numpy as np
-import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+#import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+from probabilistic_regression_tools.utils import probdists_2_quantiles
 import scipy.stats
 
 
@@ -49,7 +50,7 @@ def quantilescore_with_decomposition(probabilistic_forecasts, measurements, quan
     """
 
     if isinstance(probabilistic_forecasts[0], scipy.stats._distn_infrastructure.rv_frozen):
-        quantile_forecasts = probdists_2_quantiles.probdists_2_quantiles(probabilistic_forecasts, quantiles=quantiles)
+        quantile_forecasts = probdists_2_quantiles(probabilistic_forecasts, quantiles=quantiles)
     else:
         quantile_forecasts = np.array(probabilistic_forecasts)
 

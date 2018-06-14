@@ -2,7 +2,7 @@
 
 import numpy as np
 import pandas as pd
-import probabilistic_regression_tools.probmdl.Homoscedastic_Mdl as Homoscedastic_Mdl
+from probabilistic_regression_tools.probmdl.homoscedastic_model import HomoscedasticRegression
 from nose.tools import assert_true
 from sklearn import linear_model
 
@@ -49,7 +49,7 @@ class Test_CRPS_With_Decomposition:
         mdl = linear_model.LinearRegression()
         mdl.fit(X, y)
 
-        prob_mdl = Homoscedastic_Mdl.Homoscedastic_Mdl(mdl)
+        prob_mdl = HomoscedasticRegression(mdl)
         prob_mdl.fit(X, y)
 
         ypred = prob_mdl.predict(X)

@@ -2,8 +2,10 @@
 
 import numpy as np
 import pandas as pd
-import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
-import probabilistic_regression_tools.probmdl.Homoscedastic_Mdl as Homoscedastic_Mdl
+#import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+from probabilistic_regression_tools.utils import probdists_2_quantiles
+#import probabilistic_regression_tools.probmdl.Homoscedastic_Mdl as Homoscedastic_Mdl
+from probabilistic_regression_tools.probmdl.homoscedastic_model import HomoscedasticRegression
 import scipy.integrate as integrate
 from nose.tools import assert_equal, assert_true
 from scipy.stats import norm
@@ -47,13 +49,13 @@ class Test_CRIGN:
         mdl = linear_model.LinearRegression()
         mdl.fit(X, y)
 
-        prob_mdl = Homoscedastic_Mdl.Homoscedastic_Mdl(mdl)
+        prob_mdl = HomoscedasticRegression(mdl)
         prob_mdl.fit(X, y)
 
         ypred = prob_mdl.predict(X)
         quantile_vals = np.linspace(0.01, 0.99, 99)
 
-        quantile_forecasts = probdists_2_quantiles.probdists_2_quantiles(ypred, quantiles=quantile_vals)
+        quantile_forecasts = probdists_2_quantiles(ypred, quantiles=quantile_vals)
 
         crignv1, _ = crign.crign(ypred, y)
         crignv2, _ = crign_for_quantiles.crign_for_quantiles(quantile_forecasts, y.as_matrix(), quantiles=quantile_vals)

@@ -7,7 +7,8 @@ __status__ = "Prototype"
 # 27.02.2018
 
 import numpy as np
-import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+#import probabilistic_regression_tools.probdists_2_quantiles as probdists_2_quantiles
+from probabilistic_regression_tools.utils import probdists_2_quantiles
 import scipy.stats
 
 
@@ -43,7 +44,7 @@ def crign_for_quantiles(probabilistic_forecasts, measurements, quantiles=np.lins
 
     # convert to quantile representation if necessary
     if isinstance(probabilistic_forecasts[0], scipy.stats._distn_infrastructure.rv_frozen):
-        quantile_forecasts = probdists_2_quantiles.probdists_2_quantiles(probabilistic_forecasts, quantiles)
+        quantile_forecasts = probdists_2_quantiles(probabilistic_forecasts, quantiles)
     else:
         quantile_forecasts = np.array(probabilistic_forecasts)
 
