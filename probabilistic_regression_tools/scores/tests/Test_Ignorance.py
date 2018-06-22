@@ -19,7 +19,7 @@ class Test_Ignorance:
             pd.append(pd_single)
         meas = [-1, 0, 1]
 
-        [meanign, ign] = ignorance.ignorance(pd, meas)
+        [meanign, ign] = ignorance(meas, pd)
 
         # for comparison
         ignorance_score = - np.log(list(map(lambda x, y: x.pdf(y), pd, meas)))

@@ -2,6 +2,7 @@ import numpy as np
 import scipy.stats
 from scipy.optimize import minimize
 from sklearn.base import BaseEstimator
+import warnings
 
 __author__ = "André Gensler"
 __copyright__ = "Copyright 2018"
@@ -11,6 +12,8 @@ __status__ = "Prototype"
 def _log_likelihood_loss(prob_pred, y):
     # compute loglikelihood
     likelihoods = np.array(list(map(lambda x, measurement: x.pdf(measurement), prob_pred, y)))
+    warnings.filterwarnings("ignore")
+    # TODO: throws divide by zero encountered in double_scalars sometimes 
     return [(1 / y.size) * np.sum(-np.log(likelihoods[likelihoods >= 0]))]
 
 

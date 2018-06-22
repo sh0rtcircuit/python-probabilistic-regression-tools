@@ -76,7 +76,7 @@ class HeteroscedasticRegression(BaseEstimator):
         """Fitness function."""
         self._linearmodel_coeffs = _linearmodel_coeffs
         prob_pred = self.predict(X)
-        lossfunc_val = self.loss_func(prob_pred, y)[0]
+        lossfunc_val = self.loss_func(y, prob_pred)[0]
 
         if self.verbose>0:
             print('Iteration ' + str(self.it) + ' loss func value: ' + str(lossfunc_val))

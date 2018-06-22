@@ -7,7 +7,7 @@ __status__ = "Prototype"
 import numpy as np
 
 
-def ignorance(probabilistic_forecasts, measurements):
+def ignorance(measurements, probabilistic_forecasts):
     """ Computes the ignorance score (ign).
 
         Definition of the score is taken from

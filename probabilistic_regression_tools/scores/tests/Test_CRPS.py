@@ -26,7 +26,7 @@ class Test_CRPS:
             pd.append(pd_single)
         meas = [-1, 0, 1]
 
-        mean_crps, single_crps = crps(pd, meas)
+        mean_crps, single_crps = crps(meas, pd)
 
         def crps_closed_form(pd, meas):
             return meas * (2 * pd.cdf(meas) - 1) + 2 * pd.pdf(meas) - 1 / np.sqrt(np.pi)
@@ -54,8 +54,8 @@ class Test_CRPS:
 
         quantile_forecasts = probdists_2_quantiles(ypred, quantiles=quantile_vals)
 
-        crpsv1, _ = crps(ypred, y)
-        crpsv2, _ = crps_for_quantiles(quantile_forecasts, y.as_matrix(), quantiles=quantile_vals)
+        crpsv1, _ = crps(y, ypred)
+        crpsv2, _ = crps_for_quantiles(y.as_matrix(), quantile_forecasts, quantiles=quantile_vals)
 
         isgood = np.isclose(crpsv1, crpsv2, rtol=0.05)
         assert_true(isgood, msg="crps variants are asymptotically not the same.")
@@ -68,14 +68,14 @@ class Test_CRPS:
         for i in range(0, 3):
             pd.append(pd_single)
         meas = [-1, 0, 1]
-        mean_crps1, single_crps1 = crps(pd, meas)
+        mean_crps1, single_crps1 = crps(meas, pd)
 
         pd2 = []
         for i in range(0, 3):
             pd2.append(norm(i, 1))
         meas2 = [-1, 1, 3]
 
-        mean_crps2, single_crps2 = crps(pd2, meas2)
+        mean_crps2, single_crps2 = crps(meas2, pd2)
 
         is_good = np.equal(single_crps1, single_crps2).all()
         assert_true(is_good, msg="Relation of individual CPRS values should return same value.")

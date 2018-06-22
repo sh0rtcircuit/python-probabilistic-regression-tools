@@ -10,7 +10,7 @@ import numpy as np
 import scipy.integrate as integrate
 
 
-def quadraticscore(probabilistic_forecasts, measurements):
+def quadraticscore(measurements, probabilistic_forecasts):
     """ Computes the quadratic score (quads).
 
         Definition of the score is taken from

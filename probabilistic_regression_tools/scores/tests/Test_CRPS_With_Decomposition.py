@@ -21,7 +21,7 @@ class Test_CRPS_With_Decomposition:
         ypred = ypred.as_matrix().tolist()
         y = df.iloc[:, 9]
 
-        [crps_all, crps_rel, crps_res, crps_unc] = crps_with_decomposition.crps_with_decomposition(ypred, y)
+        [crps_all, crps_rel, crps_res, crps_unc] = crps_with_decomposition(y, ypred)
         print(crps_all)
         print(crps_rel)
         print(crps_res)
@@ -54,9 +54,9 @@ class Test_CRPS_With_Decomposition:
 
         ypred = prob_mdl.predict(X)
 
-        [crps_all, crps_rel, crps_res, crps_unc] = crps_with_decomposition.crps_with_decomposition(ypred, y)
+        [crps_all, crps_rel, crps_res, crps_unc] = crps_with_decomposition(y, ypred)
 
-        crpsval = crps(ypred, y)
+        crpsval = crps(y, ypred)
         print(crpsval[0])
 
         # relatively large deviation due to slightly different computation (9 quantiles vs. entire cdf)

@@ -6,12 +6,13 @@ __status__ = "Prototype"
 
 import numpy as np
 import scipy.stats
+import warnings
 
 #from probabilistic_regression_tools.probdists_2_quantiles import probdists_2_quantiles
 from probabilistic_regression_tools.utils import probdists_2_quantiles
 
 
-def crign_with_decomposition(probabilistic_forecasts, measurements, quantiles=np.linspace(0.1, 0.9, 9)):
+def crign_with_decomposition(measurements, probabilistic_forecasts, quantiles=np.linspace(0.1, 0.9, 9)):
     """ Computes the CRIGN score and its decompositions.
 
         The decomposition is described in
@@ -96,6 +97,10 @@ def _binaryignorance_with_decomposition(probability_class: object, measurements:
     rel, res = np.apply_along_axis(
         lambda x: _binaryignorance_single_decomp(probability_class, measurements, x, number_probability_categories,
                                                  mean_measurement), 0, np.atleast_2d(probability_categories))
+    
+    # TODO: throws sometimes divide by zero encountered in log
+    warnings.filterwarnings("ignore")
+    
     unc = np.array(-mean_measurement * np.log(mean_measurement) - (1 - mean_measurement) * np.log(1 - mean_measurement))
     unc[np.isnan(unc)] = 0
 
@@ -109,12 +114,15 @@ def _binaryignorance_single_decomp(probability_class, measurements, current_prob
     """Decomposition for a single probability level."""
     # compute probability components
     cat_idx = probability_class == current_probability_category
-
+    
     nr_prob_class = np.sum(cat_idx)
     pyi = nr_prob_class / number_probability_categories
     barzi = np.sum(measurements[cat_idx]) / nr_prob_class
     yi = current_probability_category
 
+    # TODO: throws sometimes invalid value encountered in multiply
+    warnings.filterwarnings("ignore")
+    
     # compute reliability component
     rel1 = pyi * barzi * np.log(barzi / yi)
     rel2 = pyi * (1 - barzi) * np.log((1 - barzi) / (1 - yi))

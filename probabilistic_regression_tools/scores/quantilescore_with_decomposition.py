@@ -10,7 +10,7 @@ from probabilistic_regression_tools.utils import probdists_2_quantiles
 import scipy.stats
 
 
-def quantilescore_with_decomposition(probabilistic_forecasts, measurements, quantiles=np.linspace(0.1, 0.9, 9), K=10,
+def quantilescore_with_decomposition(measurements, probabilistic_forecasts, quantiles=np.linspace(0.1, 0.9, 9), K=10,
                                      bin_averaging=False):
     """ Computes the quantile score (qs) and its decompositions.
 

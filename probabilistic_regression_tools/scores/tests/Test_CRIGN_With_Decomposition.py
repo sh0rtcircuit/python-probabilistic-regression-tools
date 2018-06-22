@@ -19,7 +19,7 @@ class Test_CRIGN_With_Decomposition:
         ypred = ypred.as_matrix().tolist()
         y = df.iloc[:, 9]
 
-        [crign_all, crign_rel, crign_res, crign_unc] = crign_with_decomposition.crign_with_decomposition(ypred, y)
+        [crign_all, crign_rel, crign_res, crign_unc] = crign_with_decomposition(y, ypred)
         print(crign_all)
         print(crign_rel)
         print(crign_res)
@@ -45,9 +45,9 @@ class Test_CRIGN_With_Decomposition:
         quantile_vals = np.linspace(0.01, 0.99, 99)
 
         # compute both variants
-        crignval, _ = crign_for_quantiles.crign_for_quantiles(quantile_forecasts, y, quantiles=quantile_vals)
-        [crign_all, crign_rel, crign_res, crign_unc] = crign_with_decomposition.crign_with_decomposition(
-            quantile_forecasts, y,
+        crignval, _ = crign_for_quantiles(y, quantile_forecasts, quantiles=quantile_vals)
+        [crign_all, crign_rel, crign_res, crign_unc] = crign_with_decomposition(
+            y, quantile_forecasts, 
             quantiles=quantile_vals)
 
         # relatively large deviation due to slightly different computation (9 quantiles vs. entire cdf)

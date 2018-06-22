@@ -9,7 +9,7 @@ __status__ = "Prototype"
 import numpy as np
 
 
-def dawidsebastianiscore(probabilistic_forecasts, measurements):
+def dawidsebastianiscore(measurements, probabilistic_forecasts):
     """ Computes the Dawid Sebastiani (dss) scoring rule.
 
     Definition of the dss is taken from

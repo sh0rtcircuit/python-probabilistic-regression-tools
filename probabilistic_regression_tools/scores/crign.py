@@ -10,7 +10,7 @@ import numpy as np
 import scipy.integrate as integrate
 
 
-def crign(probabilistic_forecasts, measurements):
+def crign(measurements, probabilistic_forecasts):
     """ Computes the CRIGN score with actual integration.
 
     This variant is the one proposed in Hersbach H. Decomposition of the Continuous Ranked Probability Score for

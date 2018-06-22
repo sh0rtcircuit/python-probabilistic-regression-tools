@@ -24,7 +24,7 @@ class Test_CRIGN:
         pd = [pd_single]
         meas = [-1]
 
-        [meancrign, singlecrign] = crign.crign(pd, meas)
+        [meancrign, singlecrign] = crign(meas, pd)
 
         # computation by hand
         # integrate from -inf to current measurement
@@ -57,8 +57,8 @@ class Test_CRIGN:
 
         quantile_forecasts = probdists_2_quantiles(ypred, quantiles=quantile_vals)
 
-        crignv1, _ = crign.crign(ypred, y)
-        crignv2, _ = crign_for_quantiles.crign_for_quantiles(quantile_forecasts, y.as_matrix(), quantiles=quantile_vals)
+        crignv1, _ = crign(y, ypred)
+        crignv2, _ = crign_for_quantiles(y.as_matrix(), quantile_forecasts, quantiles=quantile_vals)
 
         isgood = np.isclose(crignv1, crignv2, rtol=0.05)
         assert_true(isgood, msg="CRIGN variants are asymptotically not the same.")
@@ -71,14 +71,14 @@ class Test_CRIGN:
         for i in range(0, 3):
             pd.append(pd_single)
         meas = [-1, 0, 1]
-        meanCRIGN1, singleCRIGN1 = crign.crign(pd, meas)
+        meanCRIGN1, singleCRIGN1 = crign(meas, pd)
 
         pd2 = []
         for i in range(0, 3):
             pd2.append(norm(i, 1))
         meas2 = [-1, 1, 3]
 
-        meanCRIGN2, singleCRIGN2 = crign.crign(pd2, meas2)
+        meanCRIGN2, singleCRIGN2 = crign(meas2, pd2)
 
         is_good = np.isclose(singleCRIGN1, singleCRIGN2).all()
         assert_true(is_good, msg="Relation of individual CRIGN values should return roughly the same value.")

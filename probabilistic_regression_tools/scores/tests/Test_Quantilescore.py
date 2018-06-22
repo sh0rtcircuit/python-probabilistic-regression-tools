@@ -20,7 +20,7 @@ class Test_Quantilescore:
 
         meas = np.array([-0.3, 0, 0.1])
 
-        mean_qs, single_qs = quantilescore(quantile_forecasts, meas, quantiles=quantile_levels)
+        mean_qs, single_qs = quantilescore(meas, quantile_forecasts, quantiles=quantile_levels)
 
         # reference implementation by hand
         qf2 = np.array(quantile_forecasts)
@@ -41,7 +41,7 @@ class Test_Quantilescore:
             pd.append(pd_single)
         meas = [-1, 0, 1]
 
-        mean_qs, single_qs = quantilescore(pd, meas)
+        mean_qs, single_qs = quantilescore(meas, pd)
 
         # reference implementation by hand
         qf2 = list(map(lambda x: x.ppf(quantiles), pd))
@@ -61,7 +61,7 @@ class Test_Quantilescore:
 
         meas = np.array([-0.3, 0, 0.1])
 
-        mean_qs, single_qs = quantilescore(quantile_forecasts, meas, quantiles=quantiles)
+        mean_qs, single_qs = quantilescore(meas, quantile_forecasts, quantiles=quantiles)
 
         # reference implementation by hand
         qf2 = np.array(quantile_forecasts)

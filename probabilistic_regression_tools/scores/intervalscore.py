@@ -12,7 +12,7 @@ from probabilistic_regression_tools.utils import probdists_2_quantiles
 import scipy.stats
 
 
-def intervalscore(probabilistic_forecasts, measurements, quantiles=np.linspace(0.1, 0.9, 9)):
+def intervalscore(measurements, probabilistic_forecasts, quantiles=np.linspace(0.1, 0.9, 9)):
     """ Computes the intervalscore (is).
 
         Definition of the score is taken from

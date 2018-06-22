@@ -18,7 +18,7 @@ class Test_DawidSebastianiscore:
         for i in range(0, 3):
             pd.append(pd_single)
         meas = [-1, 0, 1]
-        mean_dss1, single_dss1 = dawidsebastianiscore.dawidsebastianiscore(pd, meas)
+        mean_dss1, single_dss1 = dawidsebastianiscore(meas, pd)
 
         manualresults = list(map(self._compute_dawid_sebastiani_score, pd, meas))
 

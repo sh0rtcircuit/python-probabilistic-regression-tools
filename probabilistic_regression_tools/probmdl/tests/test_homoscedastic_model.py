@@ -20,4 +20,4 @@ class test_homoscedastic_model:
         
     def test_prediction(self):
         # Assert prediction on fitted data very good
-        assert np.mean(crps(self.hom.predict(self.x),self.y)[0])<0.15
+        assert np.mean(crps(self.y, self.hom.predict(self.x))[0])<0.15

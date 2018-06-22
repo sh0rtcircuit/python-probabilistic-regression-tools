@@ -19,7 +19,7 @@ class Test_Quantilescore_With_Decomposition:
         ypred = ypred.as_matrix().tolist()
         y = df.iloc[:, 9]
 
-        [qs_all, qs_rel, qs_res, qs_unc] = quantilescore_with_decomposition(ypred, y)
+        [qs_all, qs_rel, qs_res, qs_unc] = quantilescore_with_decomposition(y, ypred)
         print(qs_all)
         print(qs_rel)
         print(qs_res)
@@ -37,7 +37,7 @@ class Test_Quantilescore_With_Decomposition:
         assert_true(is_good, msg="Result without bin_averaging does not match reference implemenation.")
 
         # now with bin averaging
-        [qs_all, qs_rel, qs_res, qs_unc] = quantilescore_with_decomposition(ypred, y, bin_averaging=True)
+        [qs_all, qs_rel, qs_res, qs_unc] = quantilescore_with_decomposition(y, ypred, bin_averaging=True)
 
         # from reference implementation
         qs_all_ref = [0.0200, 0.0324, 0.0405, 0.0454, 0.0465, 0.0456, 0.0413, 0.0322, 0.0209]
@@ -60,8 +60,8 @@ class Test_Quantilescore_With_Decomposition:
         quantile_vals = np.linspace(0.1, 0.9, 9)
 
         # compute both variants
-        qsval, _ = quantilescore(quantile_forecasts, y, quantiles=quantile_vals)
-        [qs_all, qs_rel, qs_res, qs_unc] = quantilescore_with_decomposition(quantile_forecasts, y,
+        qsval, _ = quantilescore(y, quantile_forecasts, quantiles=quantile_vals)
+        [qs_all, qs_rel, qs_res, qs_unc] = quantilescore_with_decomposition(y, quantile_forecasts, 
                                                                             quantiles=quantile_vals)
 
         # within 10% tolerance

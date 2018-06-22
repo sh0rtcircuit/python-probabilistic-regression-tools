@@ -11,7 +11,7 @@ import scipy.stats
 from probabilistic_regression_tools.utils import probdists_2_quantiles
 
 
-def crps_with_decomposition(probabilistic_forecasts, measurements, quantiles=np.linspace(0.1, 0.9, 9)):
+def crps_with_decomposition(measurements, probabilistic_forecasts, quantiles=np.linspace(0.1, 0.9, 9)):
     """ Computes the CRPS score and its decompositions.
 
     The decomposition is described in

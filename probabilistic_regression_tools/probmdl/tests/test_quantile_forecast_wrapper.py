@@ -20,5 +20,5 @@ class test_quantile_forecast_wrapper:
         
     def test_prediction(self):
         # Assert prediction on fitted data very good
-        assert np.mean(crps_for_quantiles(self.qf.predict_proba(self.x),
-                                          self.y,self.qf._quantiles_including_zero_and_one_quantile_padding())[0])<0.15
+        assert np.mean(crps_for_quantiles(self.y, self.qf.predict_proba(self.x), 
+                                          self.qf._quantiles_including_zero_and_one_quantile_padding())[0])<0.15

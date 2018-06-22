@@ -12,7 +12,7 @@ from probabilistic_regression_tools.utils import probdists_2_quantiles
 import scipy.stats
 
 
-def crign_for_quantiles(probabilistic_forecasts, measurements, quantiles=np.linspace(0.1, 0.9, 9)):
+def crign_for_quantiles(measurements, probabilistic_forecasts, quantiles=np.linspace(0.1, 0.9, 9)):
     """ Computes the CRIGN score with quantile representation.
 
     This variant is the variant proposed in Hersbach H. Decomposition of the Continuous Ranked Probability Score for

@@ -10,7 +10,7 @@ import numpy as np
 import scipy.integrate as integrate
 
 
-def sphericalscore(probabilistic_forecasts, measurements):
+def sphericalscore(measurements, probabilistic_forecasts):
     """ Computes the spherical score (sphs).
 
     Definition of the score is taken from

@@ -19,7 +19,7 @@ class Test_Sphericalscore:
         for i in range(0, 3):
             pd.append(pd_single)
         meas = [-1, 0, 1]
-        mean_spherical1, single_spherical1 = sphericalscore.sphericalscore(pd, meas)
+        mean_spherical1, single_spherical1 = sphericalscore(meas, pd)
 
         manualresults = list(map(Test_Sphericalscore._compute_spherical_score, pd, meas))
 

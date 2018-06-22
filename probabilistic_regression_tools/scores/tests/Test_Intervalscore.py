@@ -21,7 +21,7 @@ class Test_Intervalscore:
 
         quantiles = np.linspace(0.1, 0.9, 9)
 
-        overall_is, individual_is = intervalscore(ypred, y, quantiles=quantiles)
+        overall_is, individual_is = intervalscore(y, ypred, quantiles=quantiles)
 
         is_good = np.isclose(overall_is, 0.3193, atol=10e-2)
         assert_true(is_good, msg="Value is different to the reference implementation value")
@@ -36,10 +36,10 @@ class Test_Intervalscore:
 
         quantiles = np.linspace(0.1, 0.9, 9)
 
-        overall_is, individual_is = intervalscore(ypred, y, quantiles=quantiles)
+        overall_is, individual_is = intervalscore(y, ypred, quantiles=quantiles)
 
         # Test with relationship to quantilescore
-        qs, qs_individual = quantilescore(ypred, y, quantiles=quantiles)
+        qs, qs_individual = quantilescore(y, ypred, quantiles=quantiles)
         nr_intervals = int(quantiles.size / 2)
         alphas = 2 * quantiles[0:nr_intervals]
 

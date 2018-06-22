@@ -19,7 +19,7 @@ class Test_Quadraticscore:
         for i in range(0, 3):
             pd.append(pd_single)
         meas = [-1, 0, 1]
-        mean_quadratic1, single_quadratic1 = quadraticscore.quadraticscore(pd, meas)
+        mean_quadratic1, single_quadratic1 = quadraticscore(meas, pd)
 
         manualresults = list(map(self._compute_quadratic_score, pd, meas))
 
