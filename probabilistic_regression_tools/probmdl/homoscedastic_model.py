@@ -12,7 +12,6 @@ __status__ = "Prototype"
 def _log_likelihood_loss(prob_pred, y):
     # compute loglikelihood
     likelihoods = np.array(list(map(lambda x, measurement: x.pdf(measurement), prob_pred, y)))
-    warnings.filterwarnings("ignore")
     # TODO: throws divide by zero encountered in double_scalars sometimes 
     return [(1 / y.size) * np.sum(-np.log(likelihoods[likelihoods >= 0]))]
 
@@ -49,6 +48,10 @@ class HomoscedasticRegression(BaseEstimator):
         self.verbose = verbose
         self.it = 0
         self.optimize_method = optimize_method
+        if self.verbose < 2:
+            warnings.filterwarnings("ignore")
+        else:
+            warnings.filterwarnings("default")
 
     def set_sigma(self, sigma):
         """ Function to directly set sigma parameter.

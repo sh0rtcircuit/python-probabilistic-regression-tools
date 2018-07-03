@@ -6,7 +6,6 @@ __status__ = "Prototype"
 
 import numpy as np
 import scipy.stats
-import warnings
 
 #from probabilistic_regression_tools.probdists_2_quantiles import probdists_2_quantiles
 from probabilistic_regression_tools.utils import probdists_2_quantiles
@@ -98,9 +97,6 @@ def _binaryignorance_with_decomposition(probability_class: object, measurements:
         lambda x: _binaryignorance_single_decomp(probability_class, measurements, x, number_probability_categories,
                                                  mean_measurement), 0, np.atleast_2d(probability_categories))
     
-    # TODO: throws sometimes divide by zero encountered in log
-    warnings.filterwarnings("ignore")
-    
     unc = np.array(-mean_measurement * np.log(mean_measurement) - (1 - mean_measurement) * np.log(1 - mean_measurement))
     unc[np.isnan(unc)] = 0
 
@@ -119,9 +115,6 @@ def _binaryignorance_single_decomp(probability_class, measurements, current_prob
     pyi = nr_prob_class / number_probability_categories
     barzi = np.sum(measurements[cat_idx]) / nr_prob_class
     yi = current_probability_category
-
-    # TODO: throws sometimes invalid value encountered in multiply
-    warnings.filterwarnings("ignore")
     
     # compute reliability component
     rel1 = pyi * barzi * np.log(barzi / yi)
