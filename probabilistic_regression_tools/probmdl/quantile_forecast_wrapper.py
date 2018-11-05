@@ -80,7 +80,8 @@ class QuantileForecastWrapper(BaseEstimator):
             raise ValueError("Estimators should be a list of quantile forecasts or a single forecast model.")
 
         # in case only a single quantile is given
-        if not isinstance(quantiles, (list,)):
+        if not isinstance(quantiles, (list,)) and \
+            not isinstance(quantiles, (np.ndarray, np.generic) ):
             quantiles = [quantiles]
 
         self.quantiles = np.array(quantiles)
@@ -90,16 +91,17 @@ class QuantileForecastWrapper(BaseEstimator):
         self.include_one_quantile = include_one_quantile
 
         self.name_of_quantile_param = name_of_quantile_param
-        self.mapping = dict()
 
-        self._init_estimators()
+        self._init_estimators(quantiles)
 
         self.predict_cdfs = predict_cdfs
 
         self.named_est = {key: value for key, value in
                           _name_estimators([self.estimators])}
 
-    def _init_estimators(self):
+        
+
+    def _init_estimators(self, quantiles):
         """Sets the different quantiles for all estimators"""
         if not isinstance(self.estimators, (list,)):
             estimator = self.estimators
@@ -109,8 +111,9 @@ class QuantileForecastWrapper(BaseEstimator):
             raise ValueError("Number of estimators %r must be equal to number of quantiles %r" \
                              % len(self.estimators) % len(self.quantiles))
 
-        self.mapping = dict(zip(self.quantiles, self.estimators))
-
+        
+        self.mapping = dict(zip(list(self.quantiles), self.estimators))
+        
         args = dict()
         for k in self.mapping:
             args[self.name_of_quantile_param] = k
